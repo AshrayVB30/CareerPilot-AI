@@ -1,0 +1,29 @@
+services: # services: What containers does our application need?
+  postgres: # Instead of manually installing PostgreSQL on your computer, Docker downloads and runs PostgreSQL.
+    image: postgres:16 # The version of PostgreSQL to use.
+    container_name: careerpilot-postgres # The name of the container.
+    restart: unless-stopped # The container will restart unless stopped manually.
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB} # The name of the database. These variables will be set by the .env file.
+      POSTGRES_USER: ${POSTGRES_USER} # The username for the database. These variables will be set by the .env file.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # The password for the database. These variables will be set by the .env file.
+
+    ports:
+      - "${POSTGRES_PORT}:5432" # The port to access the database on. These variables will be set by the .env file.
+
+    volumes: # Volumes are used to persist data. These variables will be set by the .env file.
+      - postgres_data:/var/lib/postgresql/data # The name of the volume to use. These variables will be set by the .env file.
+
+    healthcheck: # Healthcheck is used to check if the container is healthy. These variables will be set by the .env file.
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5  
+
+volumes: # Volumes are used to persist data. These variables will be set by the .env file.
+  postgres_data:
