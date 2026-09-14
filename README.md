@@ -65,6 +65,9 @@ npm install
 npm run dev
 ```
 
+## PostgreSQL database in docker 
+
+
 
 ## Developer's Information
 

@@ -2,24 +2,46 @@
 # pyrefly: ignore [missing-import]
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-# pyrefly: ignore [missing-import]
 from sqlalchemy import text
+
+# App configuration
 from app.core.config import settings
-from app.db.database import get_db
-# app - FastAPI application instance.
+
+# Database
+from app.db.database import Base, engine, get_db
+
+# Models (must be imported so Base knows about them before create_all)
+from app.models.user import User  # noqa: F401
+
+# Routers
+from app.auth.router import router as auth_router
+
+# ------------------------------------------------------------------
+# FastAPI application instance
+# ------------------------------------------------------------------
 app = FastAPI(
     title=settings.app_name,
     debug=settings.app_debug,
 )
 
-# @app.get("/") - A simple root endpoint.
+# Create all tables on startup
+Base.metadata.create_all(bind=engine)
+
+# Include routers
+app.include_router(auth_router)
+
+
+# ------------------------------------------------------------------
+# Core endpoints
+# ------------------------------------------------------------------
+# Root endpoint
 @app.get("/")
 async def root():
     return {
         "message": "CareerPilot AI API is running"
     }
 
-# @app.get("/health") - Checks if the API is healthy.
+# Health check endpoint
 @app.get("/health")
 async def health_check():
     return {
@@ -28,12 +50,11 @@ async def health_check():
         "environment": settings.app_env,
     }
 
-# @app.get("/health/database") - Checks if the database is healthy. 
+# Database health check endpoint
 @app.get("/health/database")
 async def database_health_check(db: Session = Depends(get_db)):
     result = db.execute(text("SELECT 1"))
     value = result.scalar()
-    # returns - database connected message.
     return {
         "database": "connected",
         "result": value,
