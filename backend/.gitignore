@@ -27,3 +27,8 @@ htmlcov/
 # Temporary
 tmp/
 temp/
+
+# alembic
+alembic/
+
+# database

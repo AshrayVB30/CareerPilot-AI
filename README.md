@@ -38,6 +38,12 @@ Backend
 
 Frontend
 
+## Repository 
+
+```bash
+git clone https://github.com/vbashray/careerpilot-ai.git
+cd careerpilot-ai
+```
 
 ## Backend Setup
 
@@ -67,9 +73,17 @@ npm run dev
 
 ## PostgreSQL database in docker 
 
+## Alembic Setup
+
+```bash
+conda activate careerpilot
+alembic init alembic
+alembic revision --autogenerate -m "create users table"
+alembic upgrade head
+``` 
 
 
 ## Developer's Information
 
 Ashray V B
-[EMAIL_ADDRESS] - vbashray@gmail.com
+[EMAIL_ADDRESS]
