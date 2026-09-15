@@ -3,19 +3,15 @@
 from datetime import datetime, timedelta, timezone
 # used for JWT operations
 from jose import JWTError, jwt
-# used for password hashing
-from passlib.context import CryptContext
+# used for password hashing (using bcrypt directly - passlib is incompatible with bcrypt 4+)
+import bcrypt
 # import settings
 from app.core.config import settings
-
-# create a CryptContext instance for password hashing.
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto",
-)
 # hashes a plain password using bcrypt. (Converts plain text password → hashed password)
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    password_bytes = password.encode("utf-8")
+    hashed = bcrypt.hashpw(password_bytes, bcrypt.gensalt())
+    return hashed.decode("utf-8")
 
 
 # verifies a plain password against a hashed password (Entered password -> compared with stored hashed password -> TRUE or FALSE)
@@ -23,9 +19,9 @@ def verify_password(
     plain_password: str,
     hashed_password: str,
 ) -> bool:
-    return pwd_context.verify(
-        plain_password,
-        hashed_password,
+    return bcrypt.checkpw(
+        plain_password.encode("utf-8"),
+        hashed_password.encode("utf-8"),
     )
 # creates a JWT access token with the given subject and expiration time.(jwt containing the user's identity.)
 def create_access_token(

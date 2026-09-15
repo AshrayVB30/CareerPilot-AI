@@ -55,3 +55,5 @@ def authenticate_user(
         return None
     # return authenticated user
     return user
+
+# Delete user function
