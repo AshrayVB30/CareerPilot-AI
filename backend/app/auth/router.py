@@ -53,6 +53,11 @@ from app.core.security import create_access_token
 # get_db provides a SQLAlchemy database session to each request.
 from app.db.database import get_db
 
+# Import custom exceptions. 
+# pyrefly: ignore [missing-import]
+from fastapi import HTTPException, status
+from app.core.exceptions import UserAlreadyExistsException
+
 
 # Create an API router for authentication endpoints.
 router = APIRouter(
@@ -150,6 +155,7 @@ def login(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",
+            headers={"WWW-Authenticate": "Bearer"},
         )
 
     # Create a JWT access token for the authenticated user.
@@ -195,4 +201,4 @@ def get_me(
         "email": current_user.email,
         "is_active": current_user.is_active,
         "created_at": current_user.created_at,
-    }
+    }
