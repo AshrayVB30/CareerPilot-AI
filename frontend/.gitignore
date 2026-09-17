@@ -1,0 +1,5 @@
+# Node module
+node_modules/
+
+# Build artifacts
+.next/

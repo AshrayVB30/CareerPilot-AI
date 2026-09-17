@@ -16,6 +16,9 @@ from app.models.user import User  # noqa: F401
 # Routers
 from app.auth.router import router as auth_router
 
+# Profile router
+from app.profile.router import router as profile_router
+
 # ------------------------------------------------------------------
 # FastAPI application instance
 # ------------------------------------------------------------------
@@ -29,7 +32,7 @@ Base.metadata.create_all(bind=engine)
 
 # Include routers
 app.include_router(auth_router)
-
+app.include_router(profile_router)
 
 # ------------------------------------------------------------------
 # Core endpoints

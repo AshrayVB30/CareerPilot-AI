@@ -5,7 +5,7 @@ from datetime import datetime
 # pyrefly: ignore [missing-import]
 from sqlalchemy import Boolean, DateTime, String    
 # pyrefly: ignore [missing-import]
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 # import base from database
 # pyrefly: ignore [missing-import]
 from app.db.database import Base
@@ -50,4 +50,13 @@ class User(Base):
         default=datetime.utcnow,
         onupdate=datetime.utcnow,
         nullable=False,
+    )
+
+    # one-to-one relationship with CandidateProfile
+    # uselist=False because one user has exactly one profile
+    profile = relationship(
+        "CandidateProfile",
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan",
     )
