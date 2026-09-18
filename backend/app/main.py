@@ -26,6 +26,15 @@ from app.auth.router import router as auth_router
 # Profile router
 from app.profile.router import router as profile_router
 
+# Education router
+from app.profile.education.router import router as education_router
+
+# Experience router
+from app.profile.experience.router import router as experience_router
+
+# Skills router
+from app.profile.skills.router import router as skills_router
+
 # ------------------------------------------------------------------
 # FastAPI application instance
 # ------------------------------------------------------------------
@@ -53,6 +62,9 @@ Base.metadata.create_all(bind=engine)
 # Include routers
 app.include_router(auth_router)
 app.include_router(profile_router)
+app.include_router(education_router)
+app.include_router(experience_router)
+app.include_router(skills_router)
 
 # ------------------------------------------------------------------
 # Core endpoints
