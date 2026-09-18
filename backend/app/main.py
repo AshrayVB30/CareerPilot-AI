@@ -1,6 +1,7 @@
 # main.py - FastAPI application entry point.
 # pyrefly: ignore [missing-import]
 from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 
@@ -11,7 +12,13 @@ from app.core.config import settings
 from app.db.database import Base, engine, get_db
 
 # Models (must be imported so Base knows about them before create_all)
+# All models must be listed here so SQLAlchemy can resolve
+# relationship() references across models at startup.
 from app.models.user import User  # noqa: F401
+from app.models.profile import CandidateProfile  # noqa: F401
+from app.models.education import Education  # noqa: F401
+from app.models.experience import Experience  # noqa: F401
+from app.models.skills import CandidateSkill  # noqa: F401
 
 # Routers
 from app.auth.router import router as auth_router
@@ -25,6 +32,19 @@ from app.profile.router import router as profile_router
 app = FastAPI(
     title=settings.app_name,
     debug=settings.app_debug,
+)
+
+# ------------------------------------------------------------------
+# CORS
+# Allows the Next.js dev server (localhost:3000) to call this API.
+# In production, replace with your actual frontend domain.
+# ------------------------------------------------------------------
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Create all tables on startup

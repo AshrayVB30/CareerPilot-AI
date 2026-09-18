@@ -9,6 +9,10 @@ from app.db.database import Base
 from app.models.user import User
 from app.models.profile import CandidateProfile 
 from app.core.config import settings
+from app.models.education import Education
+from app.models.experience import Experience
+from app.models.skills import CandidateSkill
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

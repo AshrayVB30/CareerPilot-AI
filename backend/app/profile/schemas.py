@@ -3,7 +3,7 @@
 # and that the data going back to the frontend is in the correct format
 
 # pyrefly: ignore [missing-import]
-from datetime import datetime
+from datetime import date, datetime
 # pyrefly: ignore [missing-import]
 from pydantic import BaseModel, ConfigDict, HttpUrl
 
@@ -25,8 +25,56 @@ class ProfileUpdate(ProfileCreate):
 # @profile response   
 class ProfileResponse(ProfileCreate):
     model_config = ConfigDict(from_attributes=True)
-    # @field
     id: int
     user_id: int
     created_at: datetime
     updated_at: datetime
+
+
+# ----------------------------------------------------------------
+# Nested schemas for full profile response
+# ----------------------------------------------------------------
+
+class EducationResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    profile_id: int
+    institution: str
+    degree: str | None = None
+    field_of_study: str | None = None
+    start_date: date | None = None
+    end_date: date | None = None
+    description: str | None = None
+    created_at: datetime
+
+
+class ExperienceResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    profile_id: int
+    company_name: str
+    job_title: str
+    location: str | None = None
+    start_date: date | None = None
+    end_date: date | None = None
+    description: str | None = None
+    created_at: datetime
+
+
+class SkillResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    profile_id: int
+    name: str
+    category: str | None = None
+    proficiency: float | None = None
+    years_of_experience: float | None = None
+    source: str
+    created_at: datetime
+
+
+class ProfileFullResponse(ProfileResponse):
+    """Full profile including education, experience, and skills."""
+    education: list[EducationResponse] = []
+    experience: list[ExperienceResponse] = []
+    skills: list[SkillResponse] = []

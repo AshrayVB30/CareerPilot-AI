@@ -6,6 +6,7 @@ from app.db.database import get_db
 from app.models.user import User
 from app.profile.schemas import (
     ProfileCreate,
+    ProfileFullResponse,
     ProfileResponse,
     ProfileUpdate,
 )
@@ -21,6 +22,26 @@ router = APIRouter(
     prefix="/api/v1/profile",
     tags=["Profile"],
 )
+
+
+# Get the full profile including education, experience, and skills.
+@router.get(
+    "/full",
+    response_model=ProfileFullResponse,
+)
+def read_full_profile(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    profile = get_profile(db, current_user)
+
+    if not profile:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Profile not found",
+        )
+
+    return profile
 
 
 # Get the current user's profile.

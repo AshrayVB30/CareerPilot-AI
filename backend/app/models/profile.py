@@ -86,3 +86,20 @@ class CandidateProfile(Base):
         "User",
         back_populates="profile",
     )
+
+    # one-to-many relationships with education, experience, and skills
+    education = relationship(
+        "Education",
+        back_populates="profile",
+        cascade="all, delete-orphan",
+    )
+    experience = relationship(
+        "Experience",
+        back_populates="profile",
+        cascade="all, delete-orphan",
+    )
+    skills = relationship(
+        "CandidateSkill",
+        back_populates="profile",
+        cascade="all, delete-orphan",
+    )
