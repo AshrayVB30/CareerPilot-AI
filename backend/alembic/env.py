@@ -11,7 +11,9 @@ from app.models.profile import CandidateProfile
 from app.core.config import settings
 from app.models.education import Education
 from app.models.experience import Experience
-from app.models.skills import CandidateSkill
+from app.models.skills import CandidateSkill  # noqa: F401
+from app.models.project import CandidateProject  # noqa: F401
+from app.models.certification import Certification  # noqa: F401
 
 
 # this is the Alembic Config object, which provides

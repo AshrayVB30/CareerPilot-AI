@@ -103,3 +103,17 @@ class CandidateProfile(Base):
         back_populates="profile",
         cascade="all, delete-orphan",
     )
+
+    # One-to-many: a profile can have many projects
+    projects = relationship(
+        "CandidateProject",
+        back_populates="profile",
+        cascade="all, delete-orphan",
+    )
+
+    # One-to-many: a profile can have many certifications
+    certifications = relationship(
+        "Certification",
+        back_populates="profile",
+        cascade="all, delete-orphan",
+    )

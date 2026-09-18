@@ -19,6 +19,8 @@ from app.models.profile import CandidateProfile  # noqa: F401
 from app.models.education import Education  # noqa: F401
 from app.models.experience import Experience  # noqa: F401
 from app.models.skills import CandidateSkill  # noqa: F401
+from app.models.project import CandidateProject  # noqa: F401
+from app.models.certification import Certification  # noqa: F401
 
 # Routers
 from app.auth.router import router as auth_router
@@ -34,6 +36,12 @@ from app.profile.experience.router import router as experience_router
 
 # Skills router
 from app.profile.skills.router import router as skills_router
+
+# Projects router
+from app.profile.projects.router import router as project_router
+
+# Certifications router
+from app.profile.certifications.router import router as certification_router
 
 # ------------------------------------------------------------------
 # FastAPI application instance
@@ -65,6 +73,8 @@ app.include_router(profile_router)
 app.include_router(education_router)
 app.include_router(experience_router)
 app.include_router(skills_router)
+app.include_router(project_router)
+app.include_router(certification_router)
 
 # ------------------------------------------------------------------
 # Core endpoints
